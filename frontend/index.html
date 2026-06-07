@@ -1,33 +1,40 @@
-<body>
-  <nav class="navbar">
-    <h2>StockSense</h2>
-  </nav>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <title>StockSense</title>
+  </head>
+  <body>
+    <nav class="navbar">
+      <h2>StockSense</h2>
+    </nav>
 
-  <div class="container">
-    <h1>Stock Search</h1>
+    <div class="container">
+      <h1>Stock Search</h1>
 
-    <p class="subtitle">Search stocks and view analytics</p>
+      <p class="subtitle">Search stocks and view analytics</p>
 
-    <div class="search-options">
-      <label>
-        <input type="radio" name="searchType" value="name" checked />
+      <div class="search-options">
+        <label>
+          <input type="radio" name="searchType" value="name" checked />
 
-        Company Name
-      </label>
+          Company Name
+        </label>
 
-      <label>
-        <input type="radio" name="searchType" value="symbol" />
+        <label>
+          <input type="radio" name="searchType" value="symbol" />
 
-        Ticker Symbol
-      </label>
+          Ticker Symbol
+        </label>
+      </div>
+
+      <input type="text" id="searchBox" placeholder="Search" />
+
+      <div id="results"></div>
+
+      <div id="stockCard"></div>
     </div>
 
-    <input type="text" id="searchBox" placeholder="Search" />
-
-    <div id="results"></div>
-
-    <div id="stockCard"></div>
-  </div>
-
-  <script src="app.js"></script>
-</body>
+    <script src="app.js"></script>
+  </body>
+</html>

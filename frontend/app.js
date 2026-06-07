@@ -4,38 +4,46 @@ const resultsDiv = document.getElementById("results");
 
 const stockCard = document.getElementById("stockCard");
 
-searchBox.addEventListener(
-  "input",
+searchBox.addEventListener("input", async () => {
+  const query = searchBox.value.trim();
 
-  async () => {
-    const query = searchBox.value.trim();
+  const type = getSearchType();
 
-    if (query.length < 1) {
-      resultsDiv.innerHTML = "";
+  if (type === "name" && query.length < 2) {
+    resultsDiv.innerHTML = "";
+    return;
+  }
 
-      return;
-    }
+  try {
+    const type = getSearchType();
 
-    try {
-      const type = getSearchType();
+    const response = await fetch(
+      `http://localhost:3000/api/search?q=${query}&type=${type}`
+    );
 
-      const response = await fetch(
-        `http://localhost:3000/api/search?q=${query}&type=${type}`,
-      );
+    const stocks = await response.json();
 
-      const stocks = await response.json();
+    displayResults(stocks);
+  } catch (error) {
+    console.error(error);
+  }
+});
 
-      displayResults(stocks);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-);
 function getSearchType() {
   return document.querySelector('input[name="searchType"]:checked').value;
 }
+
 function displayResults(stocks) {
   resultsDiv.innerHTML = "";
+
+  if (stocks.length === 0) {
+    resultsDiv.innerHTML = `
+      <div class="result">
+        No matching stocks found
+      </div>
+    `;
+    return;
+  }
 
   stocks.forEach((stock) => {
     const div = document.createElement("div");
@@ -46,45 +54,29 @@ function displayResults(stocks) {
 
     if (searchType === "symbol") {
       div.innerHTML = `
-
         <div class="result-symbol">
-
-            ${stock.Symbol}
-
+          ${stock.Symbol}
         </div>
 
         <div class="result-name">
-
-            (${stock.Name})
-
+          ${stock.Name}
         </div>
-
-    `;
+      `;
     } else {
       div.innerHTML = `
-
         <div class="result-symbol">
-
-            ${stock.Name}
-
+          ${stock.Name}
         </div>
 
         <div class="result-name">
-
-            (${stock.Symbol})
-
+          (${stock.Symbol})
         </div>
-
-    `;
+      `;
     }
 
-    div.addEventListener(
-      "click",
-
-      () => {
-        loadStock(stock.Symbol);
-      },
-    );
+    div.addEventListener("click", () => {
+      loadStock(stock.Symbol);
+    });
 
     resultsDiv.appendChild(div);
   });
@@ -110,103 +102,43 @@ async function loadStock(symbol) {
 
 function renderStock(stock) {
   stockCard.innerHTML = `
+    <div class="card">
 
-        <div class="card">
-            <h2>
-                ${stock.name}
-            </h2>
+      <h2>${stock.name}</h2>
 
-            <p>
+      <p>${stock.symbol}</p>
 
-                ${stock.symbol}
+      <div class="grid">
 
-            </p>
-
-            <div class="grid">
-
-                <div class="metric">
-
-                    <div class="label">
-
-                        Current Price
-
-                    </div>
-
-                    <div class="value">
-
-                        $${stock.price}
-
-                    </div>
-
-                </div>
-
-                <div class="metric">
-
-                    <div class="label">
-
-                        MA20
-
-                    </div>
-
-                    <div class="value">
-
-                        ${stock.ma20}
-
-                    </div>
-
-                </div>
-
-                <div class="metric">
-
-                    <div class="label">
-
-                        MA50
-
-                    </div>
-
-                    <div class="value">
-
-                        ${stock.ma50}
-
-                    </div>
-
-                </div>
-
-                <div class="metric">
-
-                    <div class="label">
-
-                        Volume
-
-                    </div>
-
-                    <div class="value">
-
-                        ${stock.volume.toLocaleString()}
-
-                    </div>
-
-                </div>
-
-                <div class="metric">
-
-                    <div class="label">
-
-                        Volatility
-
-                    </div>
-
-                    <div class="value">
-
-                        ${stock.volatility}
-
-                    </div>
-
-                </div>
-
-            </div>
-
+        <div class="metric">
+          <div class="label">Current Price</div>
+          <div class="value">$${stock.price}</div>
         </div>
 
-    `;
+        <div class="metric">
+          <div class="label">MA20</div>
+          <div class="value">${stock.ma20}</div>
+        </div>
+
+        <div class="metric">
+          <div class="label">MA50</div>
+          <div class="value">${stock.ma50}</div>
+        </div>
+
+        <div class="metric">
+          <div class="label">Volume</div>
+          <div class="value">
+            ${stock.volume.toLocaleString()}
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="label">Volatility</div>
+          <div class="value">${stock.volatility}</div>
+        </div>
+
+      </div>
+
+    </div>
+  `;
 }
