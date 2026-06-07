@@ -8,6 +8,8 @@ The project combines a Node.js backend, a Python analytics engine, and a simple 
 
 ## Features
 
+StockSense uses a hybrid architecture where Node.js handles API requests and search functionality, while Python performs financial analytics and technical indicator calculations.
+
 ### Stock Search
 
 * Search by company name
@@ -196,6 +198,14 @@ in your browser.
 StockSense was built to explore the integration of web development and financial analytics. The goal was to create a lightweight platform that demonstrates how Python-based stock analysis can be connected to a modern web application.
 
 ---
+## Challenges
+
+- Cleaned and filtered a stock dataset from over 8,000 raw entries to approximately 5,000 usable publicly traded companies
+- Built a custom search system for company names and ticker symbols
+- Connected a Node.js backend with Python analytics
+- Integrated Yahoo Finance market data
+
+---
 
 ## Future Roadmap
 
@@ -221,6 +231,6 @@ This project is licensed under the MIT License.
 
 **Samaira**
 
-GitHub: https://github.com/sam173
+GitHub: https://github.com/samaira173
 
 Built during the Open Source Hackathon 2026 🚀
